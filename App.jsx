@@ -52,7 +52,7 @@ function App() {
     setInput(event.currentTarget.value);
   }
   function onAdd() {
-    handleAdd(input);
+    if (input != "") handleAdd(input);
     setInput("");
   }
   function Enter(event) {
@@ -69,7 +69,7 @@ function App() {
           type="text"
           value={input}
           onChange={onInput}
-          onKeyDown={Enter}
+          onKeyUp={Enter}
         ></input>
         <input type="button" value={"추가"} onClick={onAdd}></input>
         {displayTodoList()}
