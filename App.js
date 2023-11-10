@@ -39,24 +39,29 @@ function App() {
   };
 
   return (
-    <div>
-      {todos.map((todo, index) => (
-        <Todo
-          name={todo.name}
-          key={index}
-          completed={todo.completed}
-          onChange={() => handlechange(index)}
-        />
-      ))}
+    <Container>
+      <Wrapper>
+        <TodoList>
+          {todos.map((todo, index) => (
+            <Todo
+              name={todo.name}
+              key={index}
+              completed={todo.completed}
+              onChange={() => handlechange(index)}
+            />
+          ))}
+        </TodoList>
 
-      <input
-        value={todoName}
-        onChange={(e) => setTodoName(e.target.value)}
-        placeholder="할 일 이름 입력"
-      />
-      <AddButton onClick={addTodo}>할 일 추가</AddButton>
-      <Container />
-    </div>
+        <InputContainer>
+          <TodoInput
+            value={todoName}
+            onChange={(e) => setTodoName(e.target.value)}
+            placeholder="할 일 이름 입력"
+          />
+          <AddButton onClick={addTodo}>할 일 추가</AddButton>
+        </InputContainer>
+      </Wrapper>
+    </Container>
   );
 }
 
@@ -68,6 +73,12 @@ const Todo = ({ name, completed, onChange }) => {
     </TodoContainer>
   );
 };
+
+const InputContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
 
 const todoName = styled.div`
   color: ${(props) => (props.completed ? "" : "#000000")};
@@ -94,18 +105,18 @@ const AddButton = styled.button`
 
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  &:hover: {
+  &:hover {
     background-color: #0e8853;
     transform: scale(1.05);
   }
 `;
 
-const TodoInput = styled.div`
+const TodoInput = styled.input`
   border: 1px solid lightgray;
   outline: none;
-  width: 100%;
-  background: #04c270;
-  color: white;
+  width: 65%;
+  background: #fff;
+  color: #000;
   padding: 6px 10px;
   border-radius: 5px;
 
@@ -120,7 +131,7 @@ const FormGroup = styled.div`
 const Container = styled.div`
   background-color: #ced3d7;
   width: 100%;
-
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -136,7 +147,7 @@ const Wrapper = styled.div`
 const TodoList = styled.div`
   display: flex;
   flex-direction: column;
-  max-height: 800px;
+  height: 25vh;
   overflow-y: scroll;
 `;
 
