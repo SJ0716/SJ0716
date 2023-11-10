@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 function App() {
   const [todoName, setTodoName] = useState("");
   const [todos, setTodos] = useState([
     {
       name: "자바스크립트 공부하기",
-      compleated: false,
+      completed: false,
     },
     {
       name: "CSS 공부하기",
-      compleated: true,
+      completed: true,
     },
     {
       name: "HTML 공부하기",
-      compleated: false,
+      completed: false,
     },
   ]);
 
@@ -25,28 +26,27 @@ function App() {
     if (todoName.trim() !== "") {
       const newTodo = {
         name: todoName,
-        compleated: false,
+        completed: false,
       };
-      setTodos([...todos, newTodo]); 
-      setTodoName(""); 
+      setTodos([...todos, newTodo]);
+      setTodoName("");
     }
+  };
+  const handlechange = (index) => {
+    const temp = [...todos];
+    temp[index].completed = !temp[index].completed;
+    setTodos(temp);
   };
 
   return (
     <div>
       {todos.map((todo, index) => (
-        <div key={index}>
-          <div>{todo.name}</div>
-          <input
-            type="checkbox"
-            onChange={() => {
-              const temp = [...todos];
-              temp[index].compleated = !temp[index].compleated;
-              setTodos(temp);
-            }}
-            checked={todo.compleated}
-          />
-        </div>
+        <Todo
+          name={todo.name}
+          key={index}
+          completed={todo.completed}
+          onChange={() => handlechange(index)}
+        />
       ))}
 
       <input
@@ -54,9 +54,90 @@ function App() {
         onChange={(e) => setTodoName(e.target.value)}
         placeholder="할 일 이름 입력"
       />
-      <button onClick={addTodo}>할 일 추가</button>
+      <AddButton onClick={addTodo}>할 일 추가</AddButton>
+      <Container />
     </div>
   );
 }
+
+const Todo = ({ name, completed, onChange }) => {
+  return (
+    <TodoContainer>
+      <todoName completed={completed}>{name}</todoName>
+      <input type="checkbox" onChange={onChange} checked={completed} />
+    </TodoContainer>
+  );
+};
+
+const todoName = styled.div`
+  color: ${(props) => (props.completed ? "" : "#000000")};
+`;
+
+const TodoContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background: #ffffff;
+  align-items: center;
+  border: 1px solid lightgray;
+  border-radius: 7px;
+  width: 300px;
+  padding: 20px;
+`;
+
+const AddButton = styled.button`
+  border: 0;
+  outline: 0;
+  background: #04c270;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 5px;
+
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover: {
+    background-color: #0e8853;
+    transform: scale(1.05);
+  }
+`;
+
+const TodoInput = styled.div`
+  border: 1px solid lightgray;
+  outline: none;
+  width: 100%;
+  background: #04c270;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 5px;
+
+  padding: 10px 12px;
+`;
+
+const FormGroup = styled.div`
+  width: 300px;
+  display: flex;
+`;
+
+const Container = styled.div`
+  background-color: #ced3d7;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const TodoList = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-height: 800px;
+  overflow-y: scroll;
+`;
 
 export default App;
